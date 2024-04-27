@@ -1,7 +1,8 @@
 import { collection, addDoc } from "firebase/firestore";
 import { useState } from 'react';
 import { db } from '../../database/firebaseConfig';
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 
 const CadastroUsuario = () => {
@@ -26,13 +27,21 @@ const CadastroUsuario = () => {
     evento.preventDefault() // EVITA O COMPORTAMENTO PADRÃO DO FORM
     console.log(formulario) // FORMULARIO É UM OBJETO DE UMA STATE (ESTADO)
 
-    const docRef = await addDoc(collection(db, "usuarios"),formulario)
+    const docRef = await addDoc(collection(db, "usuarios"), formulario)
   }
 
 
 
   const salvar2 = async () => {
-    await setDoc(doc(db, "usuarios", formulario.email), formulario)
+    const docRef = doc(db, "usuarios", formulario.email);
+    const docSnap = await getDoc(docRef);
+    if (doc.docSnap.exists()) {
+      alert("Esse email ja existe")
+    } else {
+      await setDoc(doc(db, "usuarios", formulario.email), formulario)
+    }
+
+
   }
 
 
@@ -62,8 +71,8 @@ const CadastroUsuario = () => {
           onChange={alteraFormulario} />
 
         <button type='submit'>Salvar</button>
-        <button onClick={salvar2}>Salvar2</button>
       </form>
+      <button onClick={salvar2}>Salvar2</button>
 
     </div>
   );
