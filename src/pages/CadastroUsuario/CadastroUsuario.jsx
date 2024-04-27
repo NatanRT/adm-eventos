@@ -1,8 +1,7 @@
 import { collection, addDoc } from "firebase/firestore";
 import { useState } from 'react';
 import { db } from '../../database/firebaseConfig';
-import { doc, setDoc } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 
 const CadastroUsuario = () => {
@@ -35,7 +34,7 @@ const CadastroUsuario = () => {
   const salvar2 = async () => {
     const docRef = doc(db, "usuarios", formulario.email);
     const docSnap = await getDoc(docRef);
-    if (doc.docSnap.exists()) {
+    if (docSnap.exists()) {
       alert("Esse email ja existe")
     } else {
       await setDoc(doc(db, "usuarios", formulario.email), formulario)
