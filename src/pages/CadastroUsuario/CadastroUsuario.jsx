@@ -1,6 +1,7 @@
 import { collection, addDoc } from "firebase/firestore";
 import { useState } from 'react';
 import { db } from '../../database/firebaseConfig';
+import { doc, setDoc } from "firebase/firestore"; 
 
 
 const CadastroUsuario = () => {
@@ -29,6 +30,13 @@ const CadastroUsuario = () => {
   }
 
 
+
+  const salvar2 = async () => {
+    await setDoc(doc(db, "usuarios", formulario.email), formulario)
+  }
+
+
+
   return (
     <div>
       <h2>Cadastro de Usuário</h2>
@@ -54,6 +62,7 @@ const CadastroUsuario = () => {
           onChange={alteraFormulario} />
 
         <button type='submit'>Salvar</button>
+        <button onClick={salvar2}>Salvar2</button>
       </form>
 
     </div>
